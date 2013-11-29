@@ -21,5 +21,3 @@ SOURCES += main.cpp \
            ../commons/pointcloudnode.cpp \
            ../commons/pointcloud.cpp \
            ../commons/error.cpp
-LIBS += -lGL \
-	-lGLU

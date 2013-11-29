@@ -15,8 +15,7 @@ HEADERS += server.h \
            ../commons/pointcloudnode.h \
            ../commons/instruction.h \
            ../commons/error.h \
-           ../commons/benchmark.h \
-           ../commons/PointList.h
+           ../commons/benchmark.h
 SOURCES += interface.cpp \
            main.cpp \
            server.cpp \
@@ -26,5 +25,4 @@ SOURCES += interface.cpp \
            ../commons/pointcloudnode.cpp \
            ../commons/instruction.cpp \
            ../commons/error.cpp \
-           ../commons/benchmark.cpp \
-           ../commons/PointList.cpp
+           ../commons/benchmark.cpp

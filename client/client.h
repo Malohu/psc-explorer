@@ -47,9 +47,9 @@ class client
 	double delay_step_acquisition, nb_points_acquisition, step_acquisition;
 	double offset_phi;
 	
-
+	
+		//client();  // cree un nouveau modele
 		client(char* config_file);  // charge un ancien modele
-		int loadConfig(char* config_file);
 		int connect();  // se connecte
 		int mainLoop();  // boucle principale des actions
 		//int disconnect();

@@ -37,33 +37,3 @@ Instructions :
 		0 si ok
 		1 si échec car un traitement est déjà en cours
 	0 paramètres retour
-	
-
-Instruction client d'affichage / serveur
-
-5 : identification du client
-	1 paramètre :
-		- ID du client (robot) (long)
-	
-	Valeur retour : 0 si ok, code d'erreur sinon (1 si le client n'existe pas)
-
-6 : requete de tous les points
-	0 parametre
-	
-	valeur retour :
-		- 0 si OK, 1 si erreur
-	2 parametres retour :
-		1 : nombre de points
-		2 : points (tableau de Point)
-	
-7 : requete de points
-	1 paramètre :
-		- nombre maxi de points à renvoyer
-	
-	Valeur retour :
-		0 si OK, erreur sinon
-		
-	2 paramètres retour :
-		1 : nombre de points
-		2 : points (tableau de Point)
-	

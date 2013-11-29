@@ -2,18 +2,15 @@
 #include <unistd.h>
 
 #include "telemeter.h"
-//#include "UrgCtrl.h"
-
+#include "UrgCtrl.h"
 #include <cstdlib>
 #include <cstdio>
 
 #include "../commons/benchmark.h"
 #include "../commons/error.h"
 
-//using namespace qrk;
+using namespace qrk;
 using namespace std;
-
-int ppp = 0;
 
 Telemeter::Telemeter()
 {
@@ -52,7 +49,7 @@ Point* Telemeter::acquisition(long* nb_points)
 {
 	/* pour l'instant cette fonction est pipo, bien évidemment */
 	
-	/*Point* points = new Point[(int)(((180/step_acquisition)+1)*nb_points_acquisition)];
+	Point* points = new Point[(int)(((180/step_acquisition)+1)*nb_points_acquisition)];
 	*nb_points = 0;
 	
 	zero();
@@ -61,7 +58,7 @@ Point* Telemeter::acquisition(long* nb_points)
 		update();
 		usleep(delay_step_acquisition);
 		
-		double phi = ((double)(-i)) * step_acquisition * 195.0/180.0 + offset_phi;
+		double phi = ((double)(-i)) * step_acquisition + offset_phi;
 		
 		UrgCtrl urg;
   		if (! urg.connect(device))
@@ -82,66 +79,20 @@ Point* Telemeter::acquisition(long* nb_points)
 		
   		Point slice[2000];
   		double theta = (-270.0)/2.0;
-		double rmax_points = 4000;
-		long points_added_slice = 0;
   		for (int j = 0 ; j < n ; j++)
   		{
-  			if  (((double)(data[j]*data[j]))/(rmax_points*rmax_points)*1000 > rand()%1000)
-                        {
-                                slice[points_added_slice].y = 0;
-				slice[points_added_slice].x = ((double)data[j]) * sin(theta*Pi/180) / 1000.0;
-	                        slice[points_added_slice].z = ((double)data[j]) * cos(theta*Pi/180) / 1000.0;
-				points_added_slice++;
-                        }
+  			slice[j].y = 0;
+  			slice[j].x = ((double)data[j]) * sin(theta*Pi/180) / 1000.0;
+  			slice[j].z = ((double)data[j]) * cos(theta*Pi/180) / 1000.0;
   			theta += 270.0/(nb_points_acquisition-1);
   		}
   		Isometry rotation(0, 0, phi*Pi/180, {0,0,0});
   		rotation.makeMatrix();
-  		for (int j = 0 ; j < points_added_slice ; j++) points[(*nb_points)++] = rotation.apply(slice[j]);
+  		for (int j = 0 ; j < n ; j++) points[(*nb_points)++] = rotation.apply(slice[j]);
 	}
-	zero();*/
+	zero();
 	
-	// charge un/des fichier(s)
-	char path[200] = "input/";
-	path[6] = (ppp/100)%10+48;
-	path[7] = (ppp/10)%10+48;
-	path[8] = (ppp/1)%10+48;
-	path[9] = 0;
-	strcat(path, ".txt");
-	ppp++;
-	
-	double x, y, z, w;
-    	unsigned short r, g, b;
-    	long id, i;
-    	Point* points;
-    	*nb_points = 0;
-	
-	FILE *f = fopen(path, "rt");
-	if  (f != NULL)
-	{
-		long tmp_nb_points;
-		double size, epsilon_pruning, X, Y, Z;
-		fscanf(f, "%ld\n%lf\n%lf\n%lf %lf %lf\n", &tmp_nb_points, &size, &epsilon_pruning, &X, &Y, &Z);
-		points = new Point[tmp_nb_points];
-		*nb_points = tmp_nb_points;
-		for (i = 0 ; i < tmp_nb_points ; i++)
-		{
-			fscanf(f, "%ld  %lf %lf %lf  %lf  %d %d %d\n", &id, &x, &y, &z, &w, &r, &g, &b);
-			points[i].id = id;
-			points[i].x = x;
-			points[i].y = y;
-			points[i].z = z;
-			points[i].w = w;
-			points[i].r = r;
-			points[i].g = g;
-			points[i].b = b;
-		}
-		fclose(f);
-	}
-	
-	/*
-	// forme bizarre	
-	long n = 5000;
+	/*long n = 50000;
 	Point* points = randomPoints(n, 2.0);  // genere n points random 
 	*nb_points = n;
 	

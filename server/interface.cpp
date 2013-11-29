@@ -8,7 +8,7 @@ int server::interface()
 	bool running = true;
 	char cmd[1000];
 	char** words;
-	printf("Explorateur 3D, serveur v1.0\n");
+	printf("Explorateur 3D, serveur v0.9\n");
 	while (running)
 	{
 		printf(">: ");
@@ -105,7 +105,7 @@ int server::interface()
 						{
 							if  (clients[current_client].action == 0)
 							{
-								if  (equal(words[1], "right")) c = -c;
+								if  (equal(words[1], "left")) c = -c;
 								clients[current_client].action = 2;
 								
 								double d = ((double)c)*Pi/180;
@@ -176,7 +176,7 @@ int server::interface()
 		if  (equal(words[0], "clear"))
 		{
 			system("clear");
-			printf("Explorateur 3D, serveur v1.0\n");
+			printf("Explorateur 3D, serveur v0.9\n");
 		}
 		
 		// deplace le servomoteur

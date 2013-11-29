@@ -12,8 +12,8 @@ void Motor::init()
 	old_pos = new_pos;
 	move_step = 0;
 	turn_step = 0;
-	speed = 0.2575;  // <<-- A AJUSTER !!!
-	rotation_speed = 1.98;
+	speed = 0.25;  // <<-- A AJUSTER !!!
+	rotation_speed = 2;
 	
 	return;
 }

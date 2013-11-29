@@ -240,7 +240,7 @@ double PointCloud::errorFunction(PointCloud* reference, long nb_closest_neighbou
 	root -> errorFunctionRec(reference, nb_closest_neighbours, &nb_points_included, errors);
 	mergeSort(errors, nb_points_included);
 	double error = 0;
-	for (long i = 0 ; i < nb_points*85/100 ; i++) error += errors[i];
+	for (long i = 0 ; i < nb_points*7/10 ; i++) error += errors[i];
 	return error;
 }
 

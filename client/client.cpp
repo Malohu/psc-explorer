@@ -6,29 +6,20 @@ client::client(char* config_file)
 	working = true;
 	connected = false;
 	
-	// la conf par défaut, normalement inutile puisque le programme ne démarre pas si le fichier de conf est inexistant/invalide
+	// pour l'instant tout est hardcodé et on crée un nouveau modèle a chaque lancement du client
 	server_port = 18997;
-	strcpy(server_ip[0], "42.42.42.1");
+	strcpy(server_ip[0], "129.104.201.99");
+	id_client = rand()%10000 + 10000 * (rand()%10000);
+	longToChar(id_client, server_path);
 	default_max_world_size = 100.0;
 	default_epsilon = 0.01;
 	sleep_server_busy = 10;
-	delay_step_acquisition = 125000;  // en microsecondes
+	last_file = 0;
+	delay_step_acquisition = 250000;  // en microsecondes
 	nb_points_acquisition = 1081;
 	step_acquisition = 0.5;
 	offset_phi = 0;
 	strcpy(telemeter_device, "/dev/ttyACM0");
-	
-	if  (loadConfig(config_file))
-	{
-		error("cannot load config file");
-		exit(0);
-	}
-	
-	// termine l'initialisation
-	last_file = 0;
-	id_client = rand()%10000 + 10000 * (rand()%10000);
-	longToChar(id_client, server_path);
-	
 	Position* p = new Position();
 	position = *p;
 	delete p;
@@ -41,71 +32,11 @@ client::client(char* config_file)
 	delete pc;
 }
 
-// parse une ligne du fichier : retourne 0 si la ligne est correcte
-int parseLine(char* line, char* var, char* value)
+// charge un ancien modele
+/*client::client(char* config_file)
 {
-	int u = 0, s_var = 0, s_value = 0;
-	int cpt_equal = 0;
-	while (line[u] != 0 && line[u] != ' ' && line[u] != '=')
-	{
-		var[s_var++] = line[u];
-		if  (line[u++] == '=') cpt_equal++;
-	}
-	var[s_var] = 0;
-	while (line[u] == ' ' || line[u] == '=')
-	{
-		if  (line[u++] == '=') cpt_equal++;
-	}
-	while (line[u] != 0 && line[u] != ' ')
-	{
-		value[s_value++] = line[u];
-		if  (line[u++] == '=') cpt_equal++;
-	}
-	value[s_value] = 0;
-	printf("%s = %s\n", var, value);
 	
-	if  (!s_value) return 1;
-	if  (!s_var) return 2;
-	if  (cpt_equal != 1) return 3;
-	return 0;
-}
-
-// charge le fichier de config
-int client::loadConfig(char* config_file)
-{
-	FILE *f = fopen(config_file, "rt");
-	if  (f == NULL) return 1;
-	char c = 42;
-	bool newline = true;
-	while (newline)
-	{
-		int u = 0;
-		char line[2000], var[2000], value[2000];
-		while ((newline = fread(&c, 1, 1, f) != 0) && c != '\n') line[u++] = c;
-		line[u] = 0;
-		if  (u > 0)
-		{
-			if  (line[0] == '#') continue;  // comment
-			if  (parseLine(line, var, value))
-			{
-				error("cannot read config file");
-				return 2;
-			}
-			if  (!strcmp(var, "server")) strcpy(server_ip[0], value);
-			else if  (!strcmp(var, "telemeter_device")) strcpy(telemeter_device, value);
-			else if  (!strcmp(var, "port")) sscanf(value, "%d", &server_port);
-			else if  (!strcmp(var, "default_max_world_size")) sscanf(value, "%lf", &default_max_world_size);
-			else if  (!strcmp(var, "default_epsilon")) sscanf(value, "%lf", &default_epsilon);
-			else if  (!strcmp(var, "sleep_server_busy")) sscanf(value, "%ld", &sleep_server_busy);
-			else if  (!strcmp(var, "delay_step_acquisition")) sscanf(value, "%lf", &delay_step_acquisition);
-			else if  (!strcmp(var, "nb_points_acquisition")) sscanf(value, "%lf", &nb_points_acquisition);
-			else if  (!strcmp(var, "step_acquisition")) sscanf(value, "%lf", &step_acquisition);
-			else if  (!strcmp(var, "offset_phi")) sscanf(value, "%lf", &offset_phi);
-		}
-	}
-	fclose(f);
-	return 0;
-}
+}*/
 
 // se connecte au serveur
 int client::connect()
@@ -249,29 +180,14 @@ int client::mainLoop()
 				acq.nb_param = 3;
 				acq.param = new char*[3];
 				acq.param[0] = new char[10];
-				acq.param[1] = new char[48];
-				acq.param[2] = new char[nb_points*42+1];
+				acq.param[1] = new char[sizeof(Position)+1];
+				acq.param[2] = new char[nb_points*sizeof(Point)+1];
 				acq.param_size[0] = 10;
-				acq.param_size[1] = 48;
-				acq.param_size[2] = nb_points*42;
+				acq.param_size[1] = sizeof(Position);
+				acq.param_size[2] = nb_points*sizeof(Point);
 				*((long*)acq.param[0]) = nb_points;
-				*((double*)(acq.param[1])) = position.position.y;
-				*((double*)(acq.param[1]+8)) = position.position.x;
-				*((double*)(acq.param[1]+16)) = position.position.z;
-				*((double*)(acq.param[1]+24)) = position.orientation.x;
-				*((double*)(acq.param[1]+32)) = position.orientation.y;
-				*((double*)(acq.param[1]+40)) = position.orientation.z;
-				for (long i = 0 ; i < nb_points ; i++)
-				{
-					*((double*)(acq.param[2]+i*42)) = points[i].x;
-					*((double*)(acq.param[2]+i*42+8)) = points[i].y;
-					*((double*)(acq.param[2]+i*42+16)) = points[i].z;
-					*((double*)(acq.param[2]+i*42+24)) = points[i].w;
-					*((long*)(acq.param[2]+i*42+32)) = points[i].id;
-					*((unsigned short*)(acq.param[2]+i*42+36)) = points[i].r;
-					*((unsigned short*)(acq.param[2]+i*42+38)) = points[i].g;
-					*((unsigned short*)(acq.param[2]+i*42+40)) = points[i].b;
-				}
+				*((Position*)acq.param[1]) = position;
+				for (long i = 0 ; i < nb_points ; i++) *((Point*)(acq.param[2]+i*sizeof(Point))) = points[i];
 				
 				if  (acq.send(sock) != 0)
 				{

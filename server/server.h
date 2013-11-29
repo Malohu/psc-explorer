@@ -14,10 +14,8 @@
 #include "../commons/pointcloud.h"
 #include "../commons/geometry.h"
 #include "../commons/instruction.h"
-#include "../commons/PointList.h"
 
-#define MAX_CLIENTS 100
-#define MAX_DISPLAY_CLIENTS 100
+#define MAX_CLIENTS 10
 
 class client
 {
@@ -32,7 +30,6 @@ class client
 	
 	PointCloud main_cloud;
 	Position position;
-	PointList display_list;  // liste de points a envoyer au client d'affichage
 	char server_path[200];
 	long last_file;
 	
@@ -48,31 +45,19 @@ class client
 	
 };
 
-class DisplayClient
-{
-	public :
-	
-	bool used;
-	struct sockaddr_in client_addr;
-	socklen_t clientlen;
-	int sock;
-	long id_client;
-};
-
 class server
 {
 	public :
 	
 	char config_file[200], clients_data[200];
 	unsigned listening_port;
-	int nb_clients, max_clients, nb_display_clients, max_display_clients;
+	int nb_clients, max_clients;
 	int listening_socket, client_socket;
 	struct sockaddr_in serv_addr, cli_addr;  // addresse du serveur et du client
 	socklen_t clientlen;
 	bool is_listening, is_online;
 	
 	client clients[MAX_CLIENTS];  // les clients
-	DisplayClient display_clients[MAX_DISPLAY_CLIENTS];  // les clients d'affichage
 	
 	long sample_alignment;
 	long nb_closest_points_alignment;
@@ -92,13 +77,11 @@ class server
 	
 		server(char* Config_file);
 		int loadConfig();  // charge la config
-		int loadConfig(char* config_file);  // charge la config
 		int startListening();  // lance le thread d'ecoute (et le socket au passage)
 		int stopListening();
 		int closeAllConnexions();
 		int listeningThread();  // fonction du thread d'ecoute
 		int clientThread();  // fonction du thread client
-		int displayClientThread();  // fonction du thread du client d'affichage
 		int processingThread();  // thread de traitement des nouvelles données envoyées par le client
 		int interface();
 		
