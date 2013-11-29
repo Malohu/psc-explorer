@@ -1,0 +1,42 @@
+#server configuration file
+
+
+#path to store acquisition data
+
+clients_data =  ../../data
+
+
+#network
+
+listening_port = 18997
+max_clients = 10
+max_display_clients = 10
+
+
+#point cloud parameters
+
+#point cloud limits
+
+default_max_world_size = 100.0
+default_epsilon = 0.01
+
+
+#alignment algorithm
+
+sample_alignment = 500
+nb_closest_points_alignment = 1
+max_iterations = 200
+step_translation = 0.001
+alignment_accuracy = 0.001
+
+
+#advanced parameters
+
+threshold_mutual_distance_filter = 0.05
+nb_closest_points_mutual_distance_filter = 5
+threshold_deleted_points = 1
+nb_spheres_alignment = 1
+nb_used_spheres_alignment = 1
+radius_spheres_alignment = 200
+mutual_distance_filter_enabled = 0
+

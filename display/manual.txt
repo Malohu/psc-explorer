@@ -1,0 +1,7 @@
+Display program :
+command line : display [-n|f] source -c config_file
+
+-n source : uses network as input : source must be a valid client ID connected to server
+-f source : uses folder source as input (default : current directory)
+-c config_file : configuration file (default : display.conf)
+

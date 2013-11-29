@@ -1,0 +1,69 @@
+Instructions :
+
+1 : identification du client
+	4 paramètres :
+		- ID du client (long)
+		- chemin côté serveur (char[])
+		- numéro du dernier fichier enregistré (long)
+		- dernière position / orientation connue (Position)
+	
+	Valeur retour : 0 si ok, code d'erreur sinon
+	0 paramètres retour
+		
+2 : Requête de position
+	0 paramètres
+	
+	Valeur retour : 0 si ok, code d'erreur sinon
+	1 paramètre retour (la structure position)
+	
+3 : Requête action
+	0 paramètres
+	
+	Valeur retour :
+		0 : rien
+		1 : acquisition
+		2 : deplacement
+		3 : shutdown
+		
+	paramètres retour : aucun sauf pour deplacement (1 paramètre : la structure position de destination)
+		
+4 : Transfert de points
+	3 parametre
+		1 : nombre de points (long)
+		2 : position estimée du nouveau nuage (Position)
+		3 : points (tableau de Point)
+	
+	Valeur retour :
+		0 si ok
+		1 si échec car un traitement est déjà en cours
+	0 paramètres retour
+	
+
+Instruction client d'affichage / serveur
+
+5 : identification du client
+	1 paramètre :
+		- ID du client (robot) (long)
+	
+	Valeur retour : 0 si ok, code d'erreur sinon (1 si le client n'existe pas)
+
+6 : requete de tous les points
+	0 parametre
+	
+	valeur retour :
+		- 0 si OK, 1 si erreur
+	2 parametres retour :
+		1 : nombre de points
+		2 : points (tableau de Point)
+	
+7 : requete de points
+	1 paramètre :
+		- nombre maxi de points à renvoyer
+	
+	Valeur retour :
+		0 si OK, erreur sinon
+		
+	2 paramètres retour :
+		1 : nombre de points
+		2 : points (tableau de Point)
+	

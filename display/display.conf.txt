@@ -1,0 +1,11 @@
+#configuration du client d'affichage
+
+#le serveur
+server = 129.104.217.140
+
+# le port
+port = 18997
+
+#nombre de points maxi par requete de rafraichissement
+nb_new_points = 1000000
+

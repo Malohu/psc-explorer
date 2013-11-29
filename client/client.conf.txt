@@ -1,0 +1,24 @@
+#client configuration file
+
+
+#network
+
+server = 129.104.217.40
+port = 18997
+
+
+#point cloud parameters
+
+default_max_world_size = 100.0
+default_epsilon = 0.01
+sleep_server_busy = 10
+
+
+#acquisition parameters
+
+telemeter_device = /dev/ttyACM0
+delay_step_acquisition = 125000
+nb_points_acquisition = 1081
+step_acquisition = 0.5
+offset_phi = 0
+

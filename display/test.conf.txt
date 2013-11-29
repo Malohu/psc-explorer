@@ -1,0 +1,13 @@
+#display client configuration file
+
+
+#network
+
+server = 129.104.217.40
+port = 18997
+
+
+#refresh parameters
+
+nb_new_points = 1000000
+

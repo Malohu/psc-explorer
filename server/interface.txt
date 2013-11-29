@@ -1,0 +1,15 @@
+Interface interactive du serveur (commandes)
+
+clients : affiche la liste des clients
+use xxx : sélectionne le client xxx
+get : acquisition
+move xxx : avance de xxx millimètres
+turn left xxx : tourne a gauche de xxx degrés
+turn right xxx : tourne a droite de xxx degrés
+save xxx : enregistre le nuage de points complet (en un seul morceau) dans le fichier xxx
+stop : éteint le client
+exit : éteint le serveur
+auto start : commence l'algo d'exploration
+auto stop : arrete l'algo d'exploration
+clear : efface l'affichage
+servo xxx : deplace le servomoteur du telemetre a la position xxx (en degres)
