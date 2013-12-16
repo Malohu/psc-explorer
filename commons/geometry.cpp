@@ -1,6 +1,6 @@
 #include "../commons/geometry.h"
 
-/* test d'acces */
+/* test d'acces 2*/
 
 /* fonctions geometriques */
 
