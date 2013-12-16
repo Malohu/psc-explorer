@@ -6,7 +6,7 @@ server = 129.104.217.40
 port = 18997
 
 
-#point cloud parameters tete
+#point cloud parameters tete de
 
 default_max_world_size = 100.0
 default_epsilon = 0.01
