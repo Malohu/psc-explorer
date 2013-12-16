@@ -1,7 +1,5 @@
 #include "../commons/geometry.h"
 
-/* test d'acces 2*/
-
 /* fonctions geometriques */
 
 Vect3d add(Vect3d a, Vect3d b)
